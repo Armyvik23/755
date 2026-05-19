@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { gsap } from 'gsap';
 
 const width = window.innerWidth, height = window.innerHeight;
 
@@ -17,16 +18,15 @@ scene.add( mesh );
 
 const renderer = new THREE.WebGLRenderer( { antialias: true } );
 renderer.setSize( width, height );
-renderer.setAnimationLoop( animate );
+renderer.setAnimationLoop( () => renderer.render( scene, camera ) );
 document.body.appendChild( renderer.domElement );
 
 // animation
 
-function animate( time ) {
-
-	mesh.rotation.x = time / 2000;
-	mesh.rotation.y = time / 1000;
-
-	renderer.render( scene, camera );
-
-}
+gsap.to( mesh.rotation, {
+	x: Math.PI * 2,
+	y: Math.PI * 2,
+	duration: 4,
+	ease: 'none',
+	repeat: -1,
+} );
