@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>755th Transportation Unit — M1088 Cinematic</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ─── STICKY VIEWPORT ─────────────────────────────── -->
+  <div id="scroll-root">
+
+    <!-- Scene canvas sticks while user scrolls -->
+    <div id="sticky-wrap">
+      <canvas id="bg-canvas"></canvas>
+
+      <!-- ── LAYER STACK ── -->
+      <div id="scene">
+
+        <!-- Sky gradient -->
+        <div class="layer" id="sky"></div>
+
+        <!-- Sun / flare -->
+        <div class="layer" id="sun-wrap">
+          <div id="sun"></div>
+          <div id="sun-flare"></div>
+        </div>
+
+        <!-- Far mountains -->
+        <div class="layer" id="mountains-far">
+          <svg viewBox="0 0 1920 400" preserveAspectRatio="xMidYMax meet" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="0,400 120,180 260,280 400,140 560,220 700,100 860,200 1020,130 1180,210 1340,80 1500,190 1660,110 1800,200 1920,150 1920,400" fill="#2a3a2a" opacity="0.85"/>
+          </svg>
+        </div>
+
+        <!-- Near hills -->
+        <div class="layer" id="hills-near">
+          <svg viewBox="0 0 1920 300" preserveAspectRatio="xMidYMax meet" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,300 Q240,80 480,200 Q720,320 960,120 Q1200,0 1440,160 Q1680,300 1920,100 L1920,300 Z" fill="#1e2e1a"/>
+          </svg>
+        </div>
+
+        <!-- Dust haze -->
+        <div class="layer" id="dust"></div>
+
+        <!-- Road -->
+        <div class="layer" id="road-wrap">
+          <svg id="road-svg" viewBox="0 0 1920 600" xmlns="http://www.w3.org/2000/svg">
+            <!-- Road surface -->
+            <polygon points="660,0 1260,0 1920,600 0,600" fill="#3a3228"/>
+            <!-- Center line dashes -->
+            <g stroke="#c8a84b" stroke-width="4" stroke-dasharray="60,40" opacity="0.7">
+              <line x1="960" y1="0" x2="960" y2="600"/>
+            </g>
+            <!-- Road edge lines -->
+            <line x1="660" y1="0" x2="0" y2="600" stroke="#c8a84b" stroke-width="3" opacity="0.5"/>
+            <line x1="1260" y1="0" x2="1920" y2="600" stroke="#c8a84b" stroke-width="3" opacity="0.5"/>
+            <!-- Ground -->
+            <rect x="0" y="0" width="660" height="600" fill="#2d3a1e"/>
+            <rect x="1260" y="0" width="660" height="600" fill="#2d3a1e"/>
+          </svg>
+        </div>
+
+        <!-- Ground foreground -->
+        <div class="layer" id="ground-fg">
+          <svg viewBox="0 0 1920 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="1920" height="120" fill="#1a2412"/>
+            <path d="M0,60 Q480,0 960,50 Q1440,100 1920,30 L1920,120 L0,120 Z" fill="#253018"/>
+          </svg>
+        </div>
+
+        <!-- ── M1088 TRUCK + TRAILER SVG ── -->
+        <div class="layer" id="vehicle-wrap">
+          <svg id="vehicle-svg" viewBox="0 0 1100 380" xmlns="http://www.w3.org/2000/svg">
+
+            <!-- ════ TRAILER ════ -->
+            <g id="trailer">
+              <!-- Trailer chassis / frame -->
+              <rect x="10" y="230" width="520" height="14" rx="3" fill="#3a4a2a"/>
+              <!-- Trailer bed / cargo container -->
+              <rect x="30" y="150" width="490" height="85" rx="4" fill="#4a5e35"/>
+              <!-- Cargo container details -->
+              <rect x="30" y="150" width="490" height="10" rx="4" fill="#3d5028"/>
+              <!-- Ribbing on trailer -->
+              <line x1="120" y1="160" x2="120" y2="235" stroke="#3d5028" stroke-width="3"/>
+              <line x1="210" y1="160" x2="210" y2="235" stroke="#3d5028" stroke-width="3"/>
+              <line x1="300" y1="160" x2="300" y2="235" stroke="#3d5028" stroke-width="3"/>
+              <line x1="390" y1="160" x2="390" y2="235" stroke="#3d5028" stroke-width="3"/>
+              <!-- Rear doors -->
+              <rect x="450" y="155" width="65" height="75" rx="2" fill="#3d5028" stroke="#2d3e1a" stroke-width="1.5"/>
+              <line x1="482" y1="155" x2="482" y2="230" stroke="#2d3e1a" stroke-width="1.5"/>
+              <!-- Door hinges -->
+              <rect x="450" y="170" width="5" height="8" rx="1" fill="#5a6e48"/>
+              <rect x="450" y="205" width="5" height="8" rx="1" fill="#5a6e48"/>
+              <rect x="510" y="170" width="5" height="8" rx="1" fill="#5a6e48"/>
+              <rect x="510" y="205" width="5" height="8" rx="1" fill="#5a6e48"/>
+              <!-- Trailer undercarriage -->
+              <rect x="40" y="244" width="460" height="20" rx="3" fill="#2d3a1e"/>
+              <!-- Rear wheels -->
+              <circle cx="110" cy="285" r="42" fill="#1a1a1a"/>
+              <circle cx="110" cy="285" r="34" fill="#222"/>
+              <circle cx="110" cy="285" r="18" fill="#3a3a3a"/>
+              <circle cx="110" cy="285" r="8" fill="#555"/>
+              <!-- Dual rear wheels (slightly offset) -->
+              <circle cx="155" cy="285" r="42" fill="#1a1a1a"/>
+              <circle cx="155" cy="285" r="34" fill="#222"/>
+              <circle cx="155" cy="285" r="18" fill="#3a3a3a"/>
+              <circle cx="155" cy="285" r="8" fill="#555"/>
+              <!-- Rear axle wheels -->
+              <circle cx="360" cy="285" r="42" fill="#1a1a1a"/>
+              <circle cx="360" cy="285" r="34" fill="#222"/>
+              <circle cx="360" cy="285" r="18" fill="#3a3a3a"/>
+              <circle cx="360" cy="285" r="8" fill="#555"/>
+              <circle cx="405" cy="285" r="42" fill="#1a1a1a"/>
+              <circle cx="405" cy="285" r="34" fill="#222"/>
+              <circle cx="405" cy="285" r="18" fill="#3a3a3a"/>
+              <circle cx="405" cy="285" r="8" fill="#555"/>
+              <!-- Trailer hitch / fifth-wheel area -->
+              <rect x="505" y="215" width="30" height="30" rx="3" fill="#2a3820"/>
+              <circle cx="520" cy="230" r="8" fill="#4a5e35" stroke="#2d3e1a" stroke-width="2"/>
+              <!-- Running lights -->
+              <rect x="32" y="155" width="12" height="8" rx="2" fill="#ff4444" opacity="0.9"/>
+              <rect x="32" y="220" width="12" height="8" rx="2" fill="#ff4444" opacity="0.9"/>
+              <!-- Reflectors -->
+              <rect x="46" y="225" width="8" height="6" rx="1" fill="#ffaa00" opacity="0.8"/>
+              <rect x="460" y="225" width="8" height="6" rx="1" fill="#ff6600" opacity="0.8"/>
+              <!-- Mud flaps -->
+              <rect x="60" y="320" width="18" height="28" rx="2" fill="#1a1a1a" opacity="0.7"/>
+              <rect x="405" y="320" width="18" height="28" rx="2" fill="#1a1a1a" opacity="0.7"/>
+              <!-- Marker lights top -->
+              <circle cx="35" cy="152" r="4" fill="#ff3333" opacity="0.9"/>
+              <circle cx="515" cy="152" r="4" fill="#ff3333" opacity="0.9"/>
+            </g>
+
+            <!-- ════ TRACTOR / M1088 TRUCK CAB ════ -->
+            <g id="tractor">
+              <!-- Fifth-wheel / coupling -->
+              <rect x="522" y="225" width="50" height="18" rx="4" fill="#4a5e35"/>
+              <!-- Frame rails -->
+              <rect x="520" y="240" width="580" height="16" rx="3" fill="#3a4a2a"/>
+              <!-- Fuel tanks (side mounted) -->
+              <ellipse cx="620" cy="268" rx="14" ry="28" fill="#2d3a1e" stroke="#3a4a2a" stroke-width="2"/>
+              <ellipse cx="648" cy="268" rx="14" ry="28" fill="#2d3a1e" stroke="#3a4a2a" stroke-width="2"/>
+              <!-- Battery boxes -->
+              <rect x="660" y="250" width="40" height="30" rx="3" fill="#2a3520"/>
+              <!-- Exhaust stack (vertical pipe) -->
+              <rect x="875" y="120" width="14" height="120" rx="5" fill="#4a3820"/>
+              <ellipse cx="882" cy="118" rx="10" ry="6" fill="#3a2e18"/>
+              <!-- Exhaust smoke effect -->
+              <circle cx="882" cy="105" r="8" fill="#888" opacity="0.2"/>
+              <circle cx="878" cy="90" r="10" fill="#888" opacity="0.15"/>
+              <circle cx="885" cy="75" r="12" fill="#888" opacity="0.1"/>
+              <!-- Air stacks (2 pipes) -->
+              <rect x="895" y="130" width="10" height="100" rx="4" fill="#4a3820"/>
+              <!-- Steps / ladder -->
+              <rect x="912" y="245" width="6" height="15" rx="1" fill="#2a3520"/>
+              <rect x="912" y="215" width="6" height="15" rx="1" fill="#2a3520"/>
+              <!-- Grab handles -->
+              <path d="M 918 235 Q 928 230 918 225" stroke="#4a5e35" stroke-width="3" fill="none"/>
+              <!-- CAB BODY -->
+              <path d="M 545 165 L 545 255 L 1095 255 L 1095 175 Q 1050 155 980 145 Q 920 138 860 140 Q 810 142 780 150 Q 750 158 720 160 L 680 165 Z" fill="#4a5e35"/>
+              <!-- Cab lower skirt -->
+              <rect x="545" y="240" width="550" height="20" rx="3" fill="#3d5028"/>
+              <!-- Hood / engine compartment -->
+              <path d="M 860 145 Q 920 135 990 142 Q 1050 148 1095 170 L 1095 210 L 850 210 L 850 148 Z" fill="#4a5e35"/>
+              <!-- Hood details / vents -->
+              <rect x="870" y="155" width="200" height="6" rx="2" fill="#3d5028" opacity="0.7"/>
+              <rect x="870" y="168" width="180" height="4" rx="2" fill="#3d5028" opacity="0.7"/>
+              <rect x="870" y="178" width="190" height="4" rx="2" fill="#3d5028" opacity="0.7"/>
+              <!-- Radiator grille -->
+              <rect x="1080" y="155" width="20" height="80" rx="3" fill="#2a3520"/>
+              <line x1="1080" y1="170" x2="1100" y2="170" stroke="#4a5e35" stroke-width="2"/>
+              <line x1="1080" y1="182" x2="1100" y2="182" stroke="#4a5e35" stroke-width="2"/>
+              <line x1="1080" y1="194" x2="1100" y2="194" stroke="#4a5e35" stroke-width="2"/>
+              <line x1="1080" y1="206" x2="1100" y2="206" stroke="#4a5e35" stroke-width="2"/>
+              <line x1="1080" y1="218" x2="1100" y2="218" stroke="#4a5e35" stroke-width="2"/>
+              <!-- Bumper -->
+              <rect x="1082" y="230" width="18" height="24" rx="4" fill="#2a3520"/>
+              <!-- Tow hooks -->
+              <path d="M 1088 248 Q 1100 248 1100 256 Q 1100 264 1088 264" stroke="#4a3820" stroke-width="4" fill="none"/>
+              <!-- Cab windshield -->
+              <path d="M 555 175 L 775 162 L 830 168 L 840 210 L 548 210 Z" fill="#1a2a3a" opacity="0.85"/>
+              <!-- Windshield glare -->
+              <path d="M 570 178 L 660 168 L 650 178 L 560 186 Z" fill="white" opacity="0.12"/>
+              <!-- Windshield frame -->
+              <path d="M 548 210 L 840 210" stroke="#2d3e1a" stroke-width="3"/>
+              <path d="M 555 175 L 775 162" stroke="#2d3e1a" stroke-width="2"/>
+              <!-- Cab side windows -->
+              <rect x="550" y="172" width="5" height="38" rx="1" fill="#1a2a3a" opacity="0.7"/>
+              <!-- Door panel -->
+              <path d="M 545 165 L 680 165 L 680 255 L 545 255 Z" fill="#4a5e35"/>
+              <path d="M 548 170 L 675 170 L 675 252 L 548 252 Z" fill="#4a5e35"/>
+              <!-- Door window -->
+              <rect x="555" y="172" width="112" height="36" rx="3" fill="#1a2a3a" opacity="0.8"/>
+              <!-- Door handle -->
+              <rect x="672" y="210" width="6" height="16" rx="2" fill="#2a3520"/>
+              <!-- Door seam -->
+              <line x1="680" y1="165" x2="680" y2="255" stroke="#2d3e1a" stroke-width="2"/>
+              <!-- A-pillar -->
+              <line x1="555" y1="174" x2="548" y2="210" stroke="#2d3e1a" stroke-width="3"/>
+              <!-- Cab roof -->
+              <path d="M 545 165 Q 700 148 840 155 L 860 148 Q 820 140 720 143 Q 620 148 545 165 Z" fill="#3d5028"/>
+              <!-- Sleeper/cab roof marker lights -->
+              <circle cx="560" cy="165" r="5" fill="#ff4444" opacity="0.9"/>
+              <circle cx="840" cy="158" r="5" fill="#ff4444" opacity="0.9"/>
+              <!-- Side marker -->
+              <rect x="548" y="192" width="6" height="10" rx="2" fill="#ffaa00" opacity="0.9"/>
+              <!-- Mirror arm -->
+              <path d="M 548 180 L 520 168 L 520 190 L 548 192" fill="#2d3e1a" stroke="#2d3e1a" stroke-width="1"/>
+              <!-- Mirror glass -->
+              <rect x="510" y="165" width="14" height="28" rx="3" fill="#1a2a3a" opacity="0.9"/>
+              <rect x="511" y="166" width="12" height="26" rx="2" fill="#3a4a5a" opacity="0.4"/>
+              <!-- Air horns on cab -->
+              <path d="M 545 148 Q 540 140 550 135 Q 555 130 560 135 Q 565 140 560 148" stroke="#4a3820" stroke-width="3" fill="none"/>
+              <!-- National Stock Number plate -->
+              <rect x="600" y="200" width="60" height="20" rx="2" fill="#2a3520"/>
+              <rect x="603" y="203" width="54" height="14" rx="1" fill="#1a2510"/>
+              <!-- Headlights -->
+              <circle cx="1090" cy="188" r="12" fill="#e8e0c0" opacity="0.9"/>
+              <circle cx="1090" cy="188" r="8" fill="#fffde0" opacity="0.95"/>
+              <circle cx="1090" cy="188" r="4" fill="white"/>
+              <!-- Headlight glow -->
+              <circle cx="1090" cy="188" r="18" fill="#fffde0" opacity="0.2"/>
+              <!-- Fog lights -->
+              <ellipse cx="1090" cy="222" rx="8" ry="5" fill="#fffde0" opacity="0.7"/>
+              <!-- Front axle -->
+              <rect x="1050" y="255" width="60" height="10" rx="3" fill="#2a3520"/>
+              <!-- Front wheels -->
+              <circle cx="1070" cy="295" r="45" fill="#1a1a1a"/>
+              <circle cx="1070" cy="295" r="37" fill="#222"/>
+              <circle cx="1070" cy="295" r="20" fill="#333"/>
+              <circle cx="1070" cy="295" r="9" fill="#555"/>
+              <!-- Tire tread details -->
+              <circle cx="1070" cy="295" r="37" fill="none" stroke="#1a1a1a" stroke-width="4" stroke-dasharray="8,8"/>
+              <!-- Rear drive axles (tandem) -->
+              <circle cx="720" cy="295" r="45" fill="#1a1a1a"/>
+              <circle cx="720" cy="295" r="37" fill="#222"/>
+              <circle cx="720" cy="295" r="20" fill="#333"/>
+              <circle cx="720" cy="295" r="9" fill="#555"/>
+              <circle cx="720" cy="295" r="37" fill="none" stroke="#1a1a1a" stroke-width="4" stroke-dasharray="8,8"/>
+              <!-- Dual rear drive -->
+              <circle cx="760" cy="295" r="45" fill="#1a1a1a"/>
+              <circle cx="760" cy="295" r="37" fill="#222"/>
+              <circle cx="760" cy="295" r="20" fill="#333"/>
+              <circle cx="760" cy="295" r="9" fill="#555"/>
+              <!-- Wheel lug nuts front -->
+              <circle cx="1070" cy="258" r="3" fill="#555"/>
+              <circle cx="1107" cy="295" r="3" fill="#555"/>
+              <circle cx="1070" cy="332" r="3" fill="#555"/>
+              <circle cx="1033" cy="295" r="3" fill="#555"/>
+              <!-- Air brake lines between truck and trailer -->
+              <path d="M 530 235 Q 525 228 520 235" stroke="#1a1a1a" stroke-width="3" fill="none"/>
+              <path d="M 535 237 Q 530 230 525 237" stroke="#ff4444" stroke-width="2" fill="none"/>
+            </g>
+
+            <!-- ════ UNIT MARKINGS ════ -->
+            <g id="unit-markings" font-family="monospace" fill="#c8d4b0">
+              <!-- Unit bumper number on cab door -->
+              <text x="580" y="195" font-size="11" font-weight="bold" fill="#c8d4b0" opacity="0.9">755 TC</text>
+              <!-- Star on cab roof -->
+              <text x="700" y="158" font-size="14" fill="#c8d4b0" opacity="0.7">★</text>
+              <!-- Convoy number on front bumper -->
+              <text x="1062" y="252" font-size="10" fill="#c8d4b0" opacity="0.8">2-4</text>
+              <!-- Trailer markings -->
+              <text x="200" y="200" font-size="13" font-weight="bold" fill="#c8d4b0" opacity="0.6">755TH TRANS CO</text>
+            </g>
+
+            <!-- ════ WHEEL DUST / MOTION PARTICLES ════ -->
+            <g id="wheel-dust" opacity="0.4">
+              <circle cx="90" cy="330" r="6" fill="#8a7a5a"/>
+              <circle cx="70" cy="320" r="9" fill="#8a7a5a"/>
+              <circle cx="50" cy="315" r="12" fill="#8a7a5a"/>
+              <circle cx="30" cy="308" r="7" fill="#8a7a5a"/>
+            </g>
+
+          </svg>
+        </div><!-- /vehicle-wrap -->
+
+        <!-- Foreground foliage / rocks -->
+        <div class="layer" id="fg-foliage">
+          <svg viewBox="0 0 1920 200" preserveAspectRatio="xMidYMax meet" xmlns="http://www.w3.org/2000/svg">
+            <!-- Rock left -->
+            <ellipse cx="80" cy="160" rx="70" ry="40" fill="#1e2a14" opacity="0.9"/>
+            <ellipse cx="140" cy="175" rx="50" ry="28" fill="#253018" opacity="0.8"/>
+            <!-- Brush left -->
+            <ellipse cx="200" cy="185" rx="55" ry="20" fill="#2a3a18" opacity="0.7"/>
+            <!-- Rock right -->
+            <ellipse cx="1820" cy="165" rx="80" ry="42" fill="#1e2a14" opacity="0.9"/>
+            <ellipse cx="1750" cy="178" rx="55" ry="30" fill="#253018" opacity="0.8"/>
+            <ellipse cx="1680" cy="188" rx="60" ry="22" fill="#2a3a18" opacity="0.7"/>
+            <!-- Mid rocks -->
+            <ellipse cx="450" cy="192" rx="35" ry="15" fill="#1e2a14" opacity="0.6"/>
+            <ellipse cx="1500" cy="190" rx="40" ry="16" fill="#1e2a14" opacity="0.6"/>
+          </svg>
+        </div>
+
+        <!-- HUD / Overlay panels -->
+        <div id="hud">
+          <div id="hud-top">
+            <div id="unit-badge">
+              <span class="star">★</span>
+              <span class="unit-name">755TH TRANSPORTATION COMPANY</span>
+              <span class="star">★</span>
+            </div>
+            <div id="hud-coords">
+              <span id="coord-lat">LAT: 34°12'18"N</span>
+              <span id="coord-lon">LON: 068°45'22"E</span>
+            </div>
+          </div>
+
+          <div id="hud-corners">
+            <div class="corner tl"></div>
+            <div class="corner tr"></div>
+            <div class="corner bl"></div>
+            <div class="corner br"></div>
+          </div>
+
+          <div id="hud-scanline"></div>
+
+          <div id="hud-bottom">
+            <div id="mission-data">
+              <div class="data-row"><span class="label">VEHICLE</span><span class="value">M1088 LMTV 5T TRACTOR</span></div>
+              <div class="data-row"><span class="label">CONFIG</span><span class="value">W/ M1095 TRAILER</span></div>
+              <div class="data-row"><span class="label">MISSION</span><span class="value" id="mission-val">CONVOY OPS</span></div>
+            </div>
+            <div id="scroll-prompt">
+              <span id="scroll-text">SCROLL TO ADVANCE</span>
+              <div id="scroll-bar"><div id="scroll-fill"></div></div>
+            </div>
+          </div>
+        </div><!-- /hud -->
+
+        <!-- Scene title overlays -->
+        <div id="scene-titles">
+          <div class="scene-title" id="title-0">
+            <div class="scene-subtitle">DAWN DEPLOYMENT</div>
+            <div class="scene-main">IRON HORSE<br/>CONVOY</div>
+          </div>
+          <div class="scene-title" id="title-1">
+            <div class="scene-subtitle">MISSION BRIEF</div>
+            <div class="scene-main">FORWARD<br/>LOGISTICS</div>
+          </div>
+          <div class="scene-title" id="title-2">
+            <div class="scene-subtitle">EN ROUTE</div>
+            <div class="scene-main">STEEL<br/>MOVEMENT</div>
+          </div>
+          <div class="scene-title" id="title-3">
+            <div class="scene-subtitle">OBJECTIVE REACHED</div>
+            <div class="scene-main">MISSION<br/>COMPLETE</div>
+          </div>
+        </div>
+
+        <!-- Cinematic letterbox bars -->
+        <div id="letterbox-top"></div>
+        <div id="letterbox-bot"></div>
+
+        <!-- Vignette -->
+        <div id="vignette"></div>
+
+        <!-- Film grain overlay -->
+        <canvas id="grain-canvas"></canvas>
+
+      </div><!-- /scene -->
+    </div><!-- /sticky-wrap -->
+
+    <!-- Scroll height (controls total scroll distance) -->
+    <div id="scroll-height"></div>
+
+  </div><!-- /scroll-root -->
+
+  <!-- Ambient audio toggle -->
+  <button id="audio-btn" title="Toggle ambient sound">&#9654; AMBIENT</button>
+
+  <script src="script.js"></script>
+</body>
+</html>
